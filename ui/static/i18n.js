@@ -16,7 +16,7 @@
     const TRANSLATIONS = {
         'zh-TW': {
             // ── Header ──
-            'app.title': '📚 EPUB 中文轉換工具',
+            'app.title': '📚 EPUB 繁簡轉換工具',
             'app.subtitle': '簡體字 ←→ 繁體字轉換',
             'app.supported_formats': '支援 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式',
             'app.privacy_badge': '🔒 本工具完全在用戶瀏覽器運行，不會上傳文件',
@@ -97,7 +97,7 @@
             'info.warning': '⚠️ 字幕檔案（SRT/ASS/SSA/VTT/LRC）轉換時，自訂字典規則也會套用至純文字內容。若原文或目標包含 <code>--></code>、<code>[時間]</code>、<code>Dialogue:</code> 等格式關鍵字，可能導致字幕結構異常，請謹慎設定。',
 
             // ── Footer ──
-            'footer.version': 'EPUB 簡體字轉繁體字轉換工具 v1.0',
+            'footer.version': 'EPUB 繁簡轉換工具 v1.0',
             'footer.view_log': '📋 檢視運行日誌',
 
             // ── 報告面板 ──
@@ -153,7 +153,7 @@
 
         'zh-CN': {
             // ── Header ──
-            'app.title': '📚 EPUB 中文转换工具',
+            'app.title': '📚 EPUB 繁简转换工具',
             'app.subtitle': '简体字 ←→ 繁体字转换',
             'app.supported_formats': '支持 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式',
             'app.privacy_badge': '🔒 本工具完全在用户浏览器运行，不会上传文件',
@@ -234,7 +234,7 @@
             'info.warning': '⚠️ 字幕文件（SRT/ASS/SSA/VTT/LRC）转换时，自定义字典规则也会应用到纯文本内容。若原文或目标包含 <code>--></code>、<code>[时间]</code>、<code>Dialogue:</code> 等格式关键字，可能导致字幕结构异常，请谨慎设置。',
 
             // ── Footer ──
-            'footer.version': 'EPUB 简体字转繁体字转换工具 v1.0',
+            'footer.version': 'EPUB 繁简转换工具 v1.0',
             'footer.view_log': '📋 查看运行日志',
 
             // ── 报告面板 ──

@@ -1,10 +1,10 @@
-# EPUB 簡體字轉繁體字轉換工具
+# EPUB 繁簡轉換工具
 
 [English](README.md) | **繁體中文** | [简体中文](README-chs.md)
 
 
 
-一個純瀏覽器端的 EPUB 與字幕檔案（SRT、ASS、SSA、VTT、LRC、TXT）繁簡轉換工具。所有處理均在本地瀏覽器中完成，不會上傳任何文件。
+一個純瀏覽器端的 EPUB 與字幕檔案（SRT、ASS、SSA、VTT、LRC、TXT）的繁簡轉換工具。所有處理均在本地瀏覽器中完成，不會上傳任何文件。
 
 
 
