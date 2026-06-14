@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB 簡體字轉繁體字轉換工具</title>
+    <link rel="stylesheet" href="ui/static/style.css">
+</head>
+
+<body>
+    <!-- 語言切換列 -->
+    <div class="lang-bar" id="langBar">
+        <div class="lang-bar-inner">
+            <div class="lang-bar-right">
+                <a class="lang-bar-github" id="githubLink" target="_blank" rel="noopener noreferrer">
+                    <svg class="github-icon" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    <span class="github-text">GitHub</span>
+                </a>
+                <div class="lang-bar-switch">
+                    <button type="button" class="lang-bar-btn active" data-lang-switch="zh-TW">繁體中文</button>
+                    <button type="button" class="lang-bar-btn" data-lang-switch="zh-CN">简体中文</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 data-i18n="app.title">📚 EPUB 中文轉換工具</h1>
+            <p class="subtitle" data-i18n-html="true">
+                <span data-i18n="app.subtitle">簡體字 ←→ 繁體字轉換</span><br>
+                <small data-i18n="app.supported_formats">支援 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式</small>
+            </p>
+            <div class="privacy-badge" data-i18n="app.privacy_badge">
+                🔒 本工具完全在用戶瀏覽器運行，不會上傳文件
+            </div>
+        </header>
+
+        <main>
+            <div class="converter-box">
+                <!-- 檔案上傳區 -->
+                <div class="upload-section">
+                    <div class="drag-drop-area" id="dragDropArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                        <p class="drag-text" data-i18n="upload.drag_text" id="dragText">拖拽 EPUB、字幕或txt檔案到此處</p>
+                        <p class="or-text" data-i18n="upload.or_text">或</p>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <label class="file-input-label" id="fileInputLabel">
+                                選擇多個檔案
+                                <input type="file" id="fileInput" accept=".epub,.txt,.srt,.vtt,.lrc,.ass,.ssa" multiple hidden>
+                            </label>
+                            <label class="file-input-label dir-input-label" id="dirInputLabel" style="background-color: #6366f1;">
+                                📁 選擇資料夾
+                                <input type="file" id="dirInput" webkitdirectory directory hidden>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="selectedFile" class="selected-file"
+                        style="display: none; flex-direction: column; align-items: stretch;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <span id="fileName" style="font-weight: 600; font-size: 1.1rem;"
+                                data-i18n="upload.file_count" data-i18n-params='{"count":0}'>已選擇 0 個檔案</span>
+                            <button id="changeFile" class="btn-small btn-reselect" data-i18n="upload.reselect">重新選擇</button>
+                        </div>
+                        <div id="preFileList" class="file-list"
+                            style="max-height: 250px; background: transparent; border: 1px solid rgba(0,0,0,0.05); padding: 10px; border-radius: 6px;">
+                            <!-- 檔案列表動態生成於此 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 轉換選項 -->
+                <div class="options-section">
+                    <!-- 1. 轉換規則 -->
+                    <fieldset class="option-fieldset">
+                        <legend class="option-legend" data-i18n="options.rule_title">1.轉換規則：</legend>
+                        <div class="option-group">
+                            <select id="methodSelect">
+                                <option value="s2t" selected data-i18n="options.s2t">s2t (简体 → 台灣繁體)</option>
+                                <option value="s2twp" data-i18n="options.s2twp">s2twp (简体 → 台灣繁體 (+慣用詞轉換))</option>
+                                <option value="s2hk" data-i18n="options.s2hk">s2hk (简体 → 香港繁體)</option>
+                                <option value="tw2s" data-i18n="options.tw2s">tw2s (台灣繁體 → 简体)</option>
+                                <option value="tw2sp" data-i18n="options.tw2sp">tw2sp (台灣繁體 → 简体 (+惯用词转换))</option>
+                                <option value="hk2s" data-i18n="options.hk2s">hk2s (香港繁體 → 简体)</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- 2. 檔名處理 -->
+                    <fieldset class="option-fieldset">
+                        <legend class="option-legend" data-i18n="options.filename_title">2.檔名處理：</legend>
+                        <div class="option-group">
+                            <div class="filename-radio-group">
+                                <label>
+                                    <input type="radio" name="filenameConvert" value="toTraditional" checked>
+                                    <span data-i18n="options.filename_to_traditional">轉換為台灣繁體</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="filenameConvert" value="toSimplified">
+                                    <span data-i18n="options.filename_to_simplified">轉換為簡體</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="filenameConvert" value="none">
+                                    <span data-i18n="options.filename_none">不轉換</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="option-group checkbox" style="margin-top: 10px;">
+                            <label>
+                                <input type="checkbox" id="addConvertSuffixCheckbox">
+                                <span data-i18n="options.add_suffix">檔名加上後綴 _convert</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <!-- 3. 特殊處理 -->
+                    <fieldset class="option-fieldset">
+                        <legend class="option-legend" data-i18n="options.special_title">3.特殊處理：</legend>
+                        <div class="option-group checkbox">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label style="margin: 0; display: flex; align-items: center;">
+                                    <input type="checkbox" id="useCustomDictCheckbox">
+                                    <span data-i18n="options.enable_custom_dict">啟用自定義字典</span>
+                                </label>
+                                <button type="button" class="help-btn" id="dictHelpBtn" title="查看字典說明">
+                                    [?]
+                                </button>
+                                <button type="button" class="help-btn" id="dictEditBtn" title="編輯自定義字典"
+                                    style="font-weight: bold; padding: 0 6px;">
+                                    ✏️
+                                </button>
+                            </div>
+                        </div>
+                        <div class="option-group checkbox" style="margin-top: 10px;">
+                            <label>
+                                <input type="checkbox" id="validateCheckbox" checked>
+                                <span data-i18n="options.enable_validate">啟用 EPUB 結構驗證</span>
+                            </label>
+                            <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:28px;" data-i18n="options.validate_note">
+                                （取消勾選可加快轉換速度）
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- 字典編輯區塊 -->
+                <div id="dictEditPopup" class="dict-edit-container" style="display: none;">
+                    <div class="dict-edit-header">
+                        <h3 data-i18n="dict.edit_title">✏️ 編輯自定義字典</h3>
+                    </div>
+                    <div class="dict-edit-body">
+                        <p class="dict-edit-desc" data-i18n-html="true" data-i18n="dict.edit_desc">請遵循 <code>原文,目標</code> 格式，每行一組。以 <code>#</code> 開頭的行會被忽略。</p>
+                        <div id="dictCsvInfo" class="dict-csv-info" style="display: none;">
+                            📄 <span data-i18n="dict.loaded_label">已載入:</span> <span id="dictCsvFileName"></span>
+                        </div>
+                        <textarea id="dictEditTextarea" class="dict-edit-textarea"
+                            placeholder=""></textarea>
+                        <div class="dict-edit-footer">
+                            <div style="display: flex; gap: 8px;">
+                                <button id="loadCSVDictBtn" class="btn-secondary" data-i18n="dict.load_csv">📂 載入字典規則</button>
+                                <button id="downloadCSVDictBtn" class="btn-secondary" data-i18n="dict.download_csv">💾 下載字典規則</button>
+                                <button id="loadDefaultDictBtn" class="btn-secondary" data-i18n="dict.load_default">載入預設範本</button>
+                            </div>
+                            <button id="saveDictBtn" class="btn-primary" style="flex: none;" data-i18n="dict.close">關閉</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 轉換按鈕 -->
+                <div class="button-section">
+                    <button id="convertBtn" class="btn-primary" disabled data-i18n="convert.start">
+                        開始批量轉換
+                    </button>
+                    <div id="timerDisplay" class="timer-display" style="display: none;">
+                        ⏱️ <span data-i18n="convert.timer_running_label">已運行</span> <span id="timerValue">00:00</span>
+                    </div>
+                </div>
+
+                <!-- 下載全部按鈕（轉換完成後顯示） -->
+                <button id="downloadZipBtn" class="btn-success btn-download-all"
+                    style="display: none; width: 100%; margin-top: 16px;" data-i18n="convert.download_zip">
+                    📦 下載全部轉換結果 (ZIP)
+                </button>
+
+                <!-- 轉換托盤（同時用作進度顯示與下載區） -->
+                <div id="convertTray" class="convert-tray" style="display: none;">
+                    <div class="tray-header">
+                        <span class="tray-title" data-i18n="convert.progress_title">📋 轉換進度</span>
+                        <span id="traySummary" class="tray-summary" data-i18n="convert.progress_summary" data-i18n-params='{"completed":0,"total":0}'>0 / 0 完成</span>
+                    </div>
+                    <div class="tray-total-progress">
+                        <div class="progress-bar">
+                            <div id="trayProgressFill" class="progress-fill"></div>
+                        </div>
+                        <p id="trayProgressText" class="progress-text" style="text-align:center;font-size:0.9rem;"
+                            data-i18n="convert.progress_text" data-i18n-params='{"completed":0,"total":0}'>處理進度：0/0</p>
+                    </div>
+                    <div id="trayFileList" class="tray-file-list">
+                        <!-- 各檔案進度及下載按鈕動態生成於此 -->
+                    </div>
+                </div>
+
+                <!-- 結果區（保留供向後相容，但不再使用） -->
+                <div id="resultSection" class="result-section" style="display: none;"></div>
+
+                <!-- 錯誤提示 -->
+                <div id="errorSection" class="error-section" style="display: none;">
+                    <div id="errorContent" class="error-content"></div>
+                </div>
+            </div>
+
+            <!-- 說明區 -->
+            <div class="info-box">
+                <h3 data-i18n="info.title">💡 使用說明</h3>
+                <ol>
+                    <li data-i18n-html="true" data-i18n="info.step1">選擇「1.轉換規則」，系統會將檔案內文的簡/繁體字詞進行轉換</li>
+                    <li data-i18n-html="true" data-i18n="info.step2">設定「2.檔名處理」，決定是否轉換檔名的繁簡、是否加上後綴 <code>_convert</code></li>
+                    <li data-i18n-html="true" data-i18n="info.step3">設定「3.特殊處理」，可啟用自定義字典修正特定字詞的轉換 (包含檔名)<br>可使用 <strong>📂 載入字典規則</strong> 將本機的字典檔匯入</li>
+                </ol>
+                <h4 style="margin-top:20px;color:var(--text-primary);" data-i18n="info.convert_direction">支援的轉換方向</h4>
+                <table class="convert-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="info.table_header_setting">設定</th>
+                            <th data-i18n="info.table_header_direction">方向</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>s2t</td><td data-i18n="info.table_row_s2t">简体 → 台灣繁體</td></tr>
+                        <tr><td>s2twp</td><td data-i18n="info.table_row_s2twp">简体 → 台灣繁體 (+慣用詞轉換)</td></tr>
+                        <tr><td>s2hk</td><td data-i18n="info.table_row_s2hk">简体 → 香港繁體</td></tr>
+                        <tr><td>tw2s</td><td data-i18n="info.table_row_tw2s">台灣繁體 → 简体</td></tr>
+                        <tr><td>tw2sp</td><td data-i18n="info.table_row_tw2sp">台灣繁體 → 简体 (+惯用词转换)</td></tr>
+                        <tr><td>hk2s</td><td data-i18n="info.table_row_hk2s">香港繁體 → 简体</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:16px;color:var(--text-secondary);font-size:0.9rem;" data-i18n-html="true" data-i18n="info.warning">⚠️ 字幕檔案（SRT/ASS/SSA/VTT/LRC）轉換時，自訂字典規則也會套用至純文字內容。若原文或目標包含 <code>--></code>、<code>[時間]</code>、<code>Dialogue:</code> 等格式關鍵字，可能導致字幕結構異常，請謹慎設定。</p>
+            </div>
+        </main>
+
+        <footer>
+            <p data-i18n="footer.version">EPUB 簡體字轉繁體字轉換工具 v1.0</p>
+            <button type="button" id="reportBtn" class="footer-btn" title="檢視運行日誌" data-i18n="footer.view_log">
+                📋 檢視運行日誌
+            </button>
+            <div class="attribution-box">
+                本工具使用 
+                <strong><a href="https://stuk.github.io/jszip/" target="_blank">JSZip</a></strong>
+                (Copyright &copy; 2009–2024 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso. MIT License)
+                &
+                <strong><a href="https://github.com/nk2028/opencc-js" target="_blank">opencc-js</a></strong>
+                (Copyright The nk2028 Project. MIT License)
+                &
+                <strong><a href="https://github.com/aadsm/jschardet" target="_blank">jschardet</a></strong>
+                (Copyright &copy; 2016 António Afonso. LGPL-2.1+ License)
+            </div>
+        </footer>
+    </div>
+
+    <!-- 報告面板彈窗 -->
+    <div id="reportPanel" class="popup-overlay" style="display: none;">
+        <div class="popup-content report-panel-content">
+            <div class="popup-header">
+                <h3 data-i18n="report.title">📋 轉換報告</h3>
+                <button type="button" class="popup-close" id="closeReportPanelBtn">&times;</button>
+            </div>
+            <div class="popup-body report-panel-body">
+                <div id="reportTabs" class="report-tabs">
+                    <button class="report-tab active" data-tab="validation" data-i18n="report.tab_validation">📗 結構驗證</button>
+                    <button class="report-tab" data-tab="log" data-i18n="report.tab_log">📝 調試日誌</button>
+                </div>
+                <div id="reportTabValidation" class="report-tab-content active">
+                    <div id="reportValidationContent" class="report-content-area">
+                        <p class="report-empty-hint" data-i18n="report.validation_empty">尚未執行轉換。完成轉換後，EPUB 結構驗證結果會顯示在這裡。</p>
+                    </div>
+                </div>
+                <div id="reportTabLog" class="report-tab-content">
+                    <div class="report-toolbar">
+                        <button type="button" id="clearLogBtn" class="btn-tiny" data-i18n="report.clear_log">清除日誌</button>
+                        <button type="button" id="copyLogBtn" class="btn-tiny" data-i18n="report.copy_log">複製日誌</button>
+                    </div>
+                    <div id="reportLogContent" class="report-content-area report-log-area">
+                        <p class="report-empty-hint" data-i18n="report.log_empty">無日誌記錄。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button type="button" id="closeReportBtn" class="btn-secondary" data-i18n="report.close">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 字典說明彈窗 (維持 fixed) -->
+    <div id="dictHelpPopup" class="popover-box" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3 data-i18n="dict.help_title">📖 自定義字典說明</h3>
+                <button type="button" class="popup-close" id="closeDictHelpBtn">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div id="dictHelpContent">載入中...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 隱藏的檔案選擇器用於載入 CSV -->
+    <input type="file" id="csvFileInput" accept=".csv,.txt" style="display: none;">
+
+    <script>
+        // ===== 設定區：請修改以下變數為實際網址 =====
+        const GITHUB_URL = 'https://github.com'; // ← 請替换為實際 repo 網址
+        // ===========================================
+        // 設定 GitHub 連結
+        document.addEventListener('DOMContentLoaded', function () {
+            const githubLink = document.getElementById('githubLink');
+            if (githubLink && typeof GITHUB_URL !== 'undefined') {
+                githubLink.href = GITHUB_URL;
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.3.1/dist/umd/full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jschardet@3.1.4/dist/jschardet.min.js"></script>
+    <script src="ui/static/i18n.js"></script>
+    <script src="ui/static/script.js"></script>
+</body>
+
+</html>
