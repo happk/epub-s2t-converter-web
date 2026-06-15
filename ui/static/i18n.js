@@ -98,6 +98,7 @@
 
             // ── Footer ──
             'footer.version': 'EPUB 繁簡轉換工具 v1.0',
+            'footer.copyright_line': '&copy; EPUB 繁簡轉換工具 · <a href="https://github.com/happk/epub-s2t-converter-web" target="_blank" rel="noopener noreferrer">GitHub Repo</a> · by happk',
             'footer.view_log': '📋 檢視運行日誌',
 
             // ── 報告面板 ──
@@ -235,6 +236,7 @@
 
             // ── Footer ──
             'footer.version': 'EPUB 繁简转换工具 v1.0',
+            'footer.copyright_line': '&copy; EPUB 繁简转换工具 · <a href="https://github.com/happk/epub-s2t-converter-web" target="_blank" rel="noopener noreferrer">GitHub Repo</a> · by happk',
             'footer.view_log': '📋 查看运行日志',
 
             // ── 报告面板 ──
