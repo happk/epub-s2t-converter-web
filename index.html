@@ -54,22 +54,22 @@
                                 選擇多個檔案
                                 <input type="file" id="fileInput" accept=".epub,.txt,.srt,.vtt,.lrc,.ass,.ssa" multiple hidden>
                             </label>
-                            <label class="file-input-label dir-input-label" id="dirInputLabel" style="background-color: #6366f1;">
+                            <label class="file-input-label dir-input-label" id="dirInputLabel" style="background-color: var(--primary);">
                                 📁 選擇資料夾
                                 <input type="file" id="dirInput" webkitdirectory directory hidden>
                             </label>
                         </div>
                     </div>
                     <div id="selectedFile" class="selected-file"
-                        style="display: none; flex-direction: column; align-items: stretch;">
+                        style="display: none;">
                         <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <span id="fileName" style="font-weight: 600; font-size: 1.1rem;"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <span id="fileName"
                                 data-i18n="upload.file_count" data-i18n-params='{"count":0}'>已選擇 0 個檔案</span>
                             <button id="changeFile" class="btn-small btn-reselect" data-i18n="upload.reselect">重新選擇</button>
                         </div>
                         <div id="preFileList" class="file-list"
-                            style="max-height: 250px; background: transparent; border: 1px solid rgba(0,0,0,0.05); padding: 10px; border-radius: 6px;">
+                            style="max-height: 250px; background: transparent; padding: 10px;">
                             <!-- 檔案列表動態生成於此 -->
                         </div>
                     </div>
