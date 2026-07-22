@@ -16,7 +16,11 @@
     const TRANSLATIONS = {
         'zh-TW': {
             // ── Header ──
-            'app.title': '📚 EPUB 繁簡轉換工具',
+            'app.page_title': 'EPUB 繁簡轉換工具｜線上簡轉繁、繁轉簡支援多種格式',
+            'app.meta_description': '免費線上 EPUB 繁簡轉換工具，支援 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式，可進行簡體中文與繁體中文雙向轉換。',
+            'app.og_title': 'EPUB 繁簡轉換工具',
+            'app.og_description': '支援 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 的線上中文繁簡轉換工具',
+            'app.title': 'EPUB 繁簡轉換工具',
             'app.subtitle': '簡體字 ←→ 繁體字轉換',
             'app.supported_formats': '支援 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式',
             'app.privacy_badge': '🔒 本工具完全在用戶瀏覽器運行，不會上傳文件',
@@ -154,7 +158,11 @@
 
         'zh-CN': {
             // ── Header ──
-            'app.title': '📚 EPUB 繁简转换工具',
+            'app.page_title': 'EPUB 繁简转换工具｜在线简转繁、繁转简支持多种格式',
+            'app.meta_description': '免费在线 EPUB 繁简转换工具，支持 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式，可进行简体中文与繁体中文双向转换。',
+            'app.og_title': 'EPUB 繁简转换工具',
+            'app.og_description': '支持 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 的在线中文繁简转换工具',
+            'app.title': 'EPUB 繁简转换工具',
             'app.subtitle': '简体字 ←→ 繁体字转换',
             'app.supported_formats': '支持 EPUB、TXT、SRT、VTT、LRC、ASS、SSA 格式',
             'app.privacy_badge': '🔒 本工具完全在用户浏览器运行，不会上传文件',
@@ -416,6 +424,27 @@
 
             // 更新 HTML lang 屬性
             document.documentElement.lang = this.currentLang;
+
+            // 更新 <title>
+            document.title = i18n.t('app.page_title');
+
+            // 更新 <meta name="description">
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', i18n.t('app.meta_description'));
+            }
+
+            // 更新 <meta property="og:title">
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            if (ogTitle) {
+                ogTitle.setAttribute('content', i18n.t('app.og_title'));
+            }
+
+            // 更新 <meta property="og:description">
+            const ogDesc = document.querySelector('meta[property="og:description"]');
+            if (ogDesc) {
+                ogDesc.setAttribute('content', i18n.t('app.og_description'));
+            }
         },
 
         /**
