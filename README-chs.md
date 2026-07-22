@@ -2,6 +2,8 @@
 
 [English](README.md) | [繁體中文](README-cht.md) | **简体中文**
 
+**在线工具：** [https://happk.github.io/epub-s2t-converter-web/](https://happk.github.io/epub-s2t-converter-web/)
+
 
 
 一个纯浏览器端的 EPUB 与字幕文件（SRT、ASS、SSA、VTT、LRC、TXT）的繁简转换工具。所有处理均在本地浏览器中完成，不会上传任何文件。
@@ -9,6 +11,8 @@
 
 
 ## 使用方法
+
+也可直接使用在线版本：[https://happk.github.io/epub-s2t-converter-web/](https://happk.github.io/epub-s2t-converter-web/)
 
 > **重要：** 直接以 `file://` 协议打开 `index.html` 可能会导致部分功能（如拖拽上传）因浏览器安全限制而无法正常运作。请使用本地 HTTP 服务器启动。
 

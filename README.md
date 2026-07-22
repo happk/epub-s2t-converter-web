@@ -2,6 +2,8 @@
 
 **English** | [繁體中文](README-cht.md) | [简体中文](README-chs.md)
 
+**Online Tool:** [https://happk.github.io/epub-s2t-converter-web/](https://happk.github.io/epub-s2t-converter-web/)
+
 
 
 A browser-based tool for converting EPUB files and subtitle files (SRT, ASS, SSA, VTT, LRC, TXT) between Simplified and Traditional Chinese. All processing runs locally in your browser — no files are uploaded.
@@ -9,6 +11,8 @@ A browser-based tool for converting EPUB files and subtitle files (SRT, ASS, SSA
 
 
 ## Usage
+
+You can also use the online version directly: [https://happk.github.io/epub-s2t-converter-web/](https://happk.github.io/epub-s2t-converter-web/)
 
 > **Important:** Opening `index.html` directly via `file://` protocol may cause certain features (e.g., drag-and-drop upload) to malfunction due to browser security restrictions. Please use a local HTTP server instead.
 
