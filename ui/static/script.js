@@ -1408,7 +1408,8 @@ function convertDocumentText(content, converter, useCustomDict, fileName) {
     }
 
     // 執行 DOM 文字轉換（批量收集 + 批量轉換）
-    batchTraverseNode(doc.documentElement, converter);
+    // batchTraverseNode 不處理字典，字典須由呼叫端套用 (透過傳入字典包裝過的轉換器)
+    batchTraverseNode(doc.documentElement, (text) => applyCustomDict(text, converter, useCustomDict));
 
     // 序列化回字串
     const serializer = new XMLSerializer();
